@@ -1,0 +1,49 @@
+mov ax, 0
+mov al, var2
+mov bit, 0
+mov cx, 8
+
+Booth:
+	pop ax
+	cmp bit, 0
+	je Even
+	jmp Odd
+	
+Even:
+	push ax
+	mov bl, 01h
+	and al, bl
+	cmp al, 0
+	je ShiftRight
+	jmp Add
+
+Odd:
+	push ax
+	mov bl, 01h
+	and al, bl
+	cmp al, 0
+	je Subtract
+	jmp ShiftRight
+Add:
+	pop ax
+	add ah, pos
+	push ax
+	jmp ShiftRight
+
+Subtract:
+	pop ax
+	add ah, neg
+	push ax
+	jmp ShiftRight
+
+ShiftRight:
+	pop ax			; mov bit value over
+	push ax
+	and al, 1
+	mov bit, al
+	
+	pop ax			; shift right 1
+	shr ax, 1
+	push ax
+	
+loop Booth

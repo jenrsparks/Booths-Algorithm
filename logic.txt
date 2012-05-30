@@ -1,0 +1,49 @@
+
+mov ax, 00h
+mov dx, var2
+mov bit, 0
+mov cx, 8
+
+Booth:
+
+	cmp bit, 0
+	je Even
+	jmp Odd
+	
+Even:
+	push ax
+	mov bx, 01h
+	and ax, bx
+	cmp ax, 0
+	je ShiftRight
+	jmp Add
+
+Odd:
+	push ax
+	mov bx, 01h
+	and ax, bx
+	cmp ax, 0
+	je Subtract
+	jmp ShiftRight
+	
+ShiftRight:
+;				  need to use dx for this
+;	pop dx			; mov bit value over
+;	push dx
+;	and ax, 1
+;	mov bit, ax
+	
+	pop ax
+	shr ax, 1
+
+Add:
+	pop ax
+	add ax, pos
+	push ax
+	jmp ShiftRight
+
+Subtract:
+	pop ax
+	add ax, neg
+	push ax
+	jmp ShiftRight
